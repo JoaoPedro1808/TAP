@@ -16,7 +16,7 @@ public class Db {
         }
     }
 
-    public List<Pedido> obterBanco() { // Mudei o nome da função
+    public List<Pedido> obterBanco() {
         return banco;
     }
 

@@ -2,6 +2,7 @@ package cleancode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Sistema {
@@ -31,18 +32,18 @@ public class Sistema {
             }
 
             switch (opcao) {
-                case 1 -> novoPedido();
+                case 1 -> solicitarNovoPedido();
                 case 2 -> listarPedidos();
                 case 3 -> buscarPedidosID();
                 case 4 -> gerarRelatorio();
-                case 5 -> cancelar();
+                case 5 -> cancelarPedido();
                 case 0 -> System.out.println("fim");
                 default -> System.out.println("opcao invalida");
             }
         }
     }
 
-    public void novoPedido() {
+    public void solicitarNovoPedido() {
         System.out.println("Nome do cliente:");
         String nomeCliente = sc.nextLine();
 
@@ -143,7 +144,6 @@ public class Sistema {
 
         Pedido pedidoEncontrado = db.obterId(id);
 
-
         if (pedidoEncontrado != null) {
             System.out.println("Pedido encontrado");
             System.out.println("id: " + pedidoEncontrado.id);
@@ -170,23 +170,30 @@ public class Sistema {
         relatorio.relatorioCompleto();
     }
 
-    public void cancelar() {
+    public void cancelarPedido() {
         System.out.println("Digite id do pedido");
         int id = Integer.parseInt(sc.nextLine());
+        Pedido idPedido = db.obterId(id);
 
-        for (int i = 0; i < pedidos.size(); i++) {
-            if (pedidos.get(i).id == id) {
-                if (pedidos.get(i).status.equals("CANCELADO")) {
-                    System.out.println("ja cancelado");
-                } else {
-                    pedidos.get(i).status = "CANCELADO";
-                    System.out.println("cancelado");
-                }
-                return;
-            }
+        if (idPedido == null) {
+            System.out.println("pedido não existe");
+            return;
         }
 
-        System.out.println("pedido não existe");
+        if (idPedido.status.equals("Cancelado")) {
+            System.out.println("Pedido ja cancelado");
+            return;
+        }
+
+        System.out.println("Deseja relamente cancelar o pedido" + idPedido.id + "(s/n)");
+        String confirmacao = sc.nextLine();
+
+        if (Objects.equals(confirmacao, "s")) {
+            idPedido.status = "Cancelado";
+            System.out.println("Cancelado");
+        } else {
+            System.out.println("Operação abortada");
+        }
     }
 
     public double aplicarDesconto(double valor, int tipoCliente) {
