@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Sistema {
-
     Scanner sc = new Scanner(System.in);
     List<Pedido> pedidos = new ArrayList<>();
     Db db = new Db();
