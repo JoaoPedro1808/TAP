@@ -7,7 +7,7 @@ public class Db {
 
     public static List<Pedido> banco = new ArrayList<>();
 
-    public void save(Pedido pedido) { // Mudei o "p" para "pedido"
+    public void save(Pedido pedido) {
         try {
             banco.add(pedido);
             System.out.println("salvou no banco");
@@ -20,7 +20,7 @@ public class Db {
         return banco;
     }
 
-    public Pedido obterId(int id) { // Mudei o nome da função e encurtei o "for"
+    public Pedido obterId(int id) {
         for (Pedido pedido : banco) {
             if (pedido.id == id) {
                 return pedido;

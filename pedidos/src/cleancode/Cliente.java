@@ -4,9 +4,9 @@ public class Cliente {
     public int id;
     public String nome;
     public String email;
-    public int tipo; // 1 comum, 2 premium, 3 vip
+    public int tipo;
 
-    public String tipoCliente() { // Mudei o nome da função e troquei o "if" para o "case".
+    public String tipoCliente() {
         return switch (tipo) {
             case 1 -> "Comum";
             case 2 -> "Premium";

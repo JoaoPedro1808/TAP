@@ -8,7 +8,7 @@ public class Pedido {
     public double total;
     public String status;
 
-    public double precoTotal() { // Mudei o nome da função.
+    public double precoTotal() {
         double subTotal = 0;
         for (Item item : itens) {
             subTotal += item.calcularPrecoTotal();
@@ -16,10 +16,11 @@ public class Pedido {
         return subTotal;
     }
 
-    public void detalhesPedido() { // Mudei o nome da função.
+    public void detalhesPedido() {
         System.out.println("Pedido " + id);
         System.out.println("Cliente " + cliente.nome);
-        for (Item iten : itens) { // Diminui o "for".
+
+        for (Item iten : itens) {
             System.out.println(iten.nome);
         }
         System.out.println(total);

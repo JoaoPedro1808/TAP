@@ -3,19 +3,26 @@ package cleancode;
 import java.util.List;
 
 public class Relatorio {
-    //Transformei todas as variaveis em atributos da classe
-    int totalPedidos = 0; // Pegar o tamnho da lista
-    double valorTotal = 0; // Para armazenar o valor toatal
+    int totalPedidos = 0;
+    double valorTotal = 0;
     int cancelados = 0;
-    int clientesComuns = 0; // Mudei o nome da variavel
-    int clientesPremiums = 0; // Mudei o nome da variavel
-    int clientesVips = 0; // Mudei o nome da variavel
+    int clientesComuns = 0;
+    int clientesPremiums = 0;
+    int clientesVips = 0;
 
-    public void relatorioCompleto(List<Pedido> pedidos) { // Encurtei a função e tirei algumas outra coisas para colocar em outras funções
+    public Db bancoDeDado;
+
+    public Relatorio (Db bancoDeDado) {
+        this.bancoDeDado = bancoDeDado;
+    }
+
+    public void relatorioCompleto() {
         System.out.println("======= RELATÓRIO =======");
+
+        List<Pedido> pedidos = this.bancoDeDado.obterBanco();
         this.totalPedidos = pedidos.size();
 
-        for (Pedido pedido : pedidos) { // Encurtei o "for"
+        for (Pedido pedido : pedidos) {
             this.valorTotal += pedido.total;
 
             if ("CANCELADO".equals(pedido.status)) {
@@ -29,8 +36,8 @@ public class Relatorio {
             }
             imprimirDetalhesPedido(pedido);
         }
-        imprimirResumo(); // Chamada da função
-        avaliarDesempenho(); // Chamada da função
+        imprimirResumo();
+        avaliarDesempenho();
     }
 
     public void imprimirDetalhesPedido(Pedido pedido) {
@@ -44,7 +51,6 @@ public class Relatorio {
 
     public void imprimirResumo() {
         System.out.println("--------------------");
-        // Coloquei as chamadas dos atributos em vez dos paramentros
         System.out.println("qtd pedidos: " + this.totalPedidos);
         System.out.println("valor total: " + this.valorTotal);
         System.out.println("cancelados: " + this.cancelados);
@@ -56,7 +62,7 @@ public class Relatorio {
         System.out.println("media: " + mediaPreco);
     }
 
-    public void avaliarDesempenho() { // Função para imprimir o desempenho
+    public void avaliarDesempenho() {
         if (this.valorTotal > 1000) {
             System.out.println("resultado muito bom");
         } else if (this.valorTotal > 500) {

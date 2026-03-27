@@ -11,7 +11,7 @@ public class Sistema {
     Db db = new Db();
 
     public void run() {
-        int opcao = -1; // Mudei o nome da funcao
+        int opcao = -1;
 
         while (opcao != 0) {
             System.out.println("==== SISTEMA ====");
@@ -27,10 +27,10 @@ public class Sistema {
                 opcao = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
                 System.out.println("erro");
-                continue; // Coloquei o "continue"
+                continue;
             }
 
-            switch (opcao) { // Mudei de "if" para "case" para facilitar a leitura
+            switch (opcao) {
                 case 1 -> novoPedido();
                 case 2 -> listarPedidos();
                 case 3 -> buscarPedidosID();
@@ -47,7 +47,7 @@ public class Sistema {
         String nomeCliente = sc.nextLine();
 
         System.out.println("Tipo cliente (1 comum, 2 premium, 3 vip):");
-        int tipoDoCliente = 0; // Mudei o nome da variavel
+        int tipoDoCliente = 0;
         try {
             tipoDoCliente = Integer.parseInt(sc.nextLine());
         } catch (Exception e) {
@@ -55,13 +55,13 @@ public class Sistema {
             tipoDoCliente = 1;
         }
 
-        Cliente cliente = new Cliente(); // Mudei o nome da variavel
+        Cliente cliente = new Cliente();
         cliente.id = pedidos.size() + 1;
         cliente.nome = nomeCliente;
         cliente.tipo = tipoDoCliente;
         cliente.email = nomeCliente.replace(" ", "").toLowerCase() + "@email.com";
 
-        Pedido pedido = new Pedido(); // Mudei o nome da variavel
+        Pedido pedido = new Pedido();
         pedido.id = pedidos.size() + 1;
         pedido.cliente = cliente;
         pedido.status = "NOVO";
@@ -70,14 +70,14 @@ public class Sistema {
         String continua = "s";
         while (continua.equalsIgnoreCase("s")) {
             System.out.println("Nome do item:");
-            String nomeItem = sc.nextLine(); // Mudei o nome da variavel
+            String nomeItem = sc.nextLine();
 
             System.out.println("Preço do item:");
             double precoItem = 0;
             try {
                 precoItem = Double.parseDouble(sc.nextLine());
             } catch (Exception e) {
-                System.out.println("Preço invalido"); // Tratamento de erro (mesagem)
+                System.out.println("Preço invalido");
                 precoItem = 0;
             }
 
@@ -86,7 +86,7 @@ public class Sistema {
             try {
                 quantidadePedido = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
-                System.out.println("Quantidade invalida"); // Tratamento de erro (mesagem)
+                System.out.println("Quantidade invalida");
                 quantidadePedido = 1;
             }
 
@@ -105,9 +105,9 @@ public class Sistema {
             total = total + (pedido.itens.get(i).preco * pedido.itens.get(i).quantidade);
         }
 
-        double subtotal = pedido.precoTotal(); // Chamando a função
-        double totalComDesconto = aplicarDesconto(subtotal, cliente.tipo); // Chamando a função
-        pedido.total = totalComDesconto + calcularFrete(totalComDesconto); // Chamando a função
+        double subtotal = pedido.precoTotal();
+        double totalComDesconto = aplicarDesconto(subtotal, cliente.tipo);
+        pedido.total = totalComDesconto + calcularFrete(totalComDesconto);
 
         pedidos.add(pedido);
         db.save(pedido);
@@ -123,10 +123,10 @@ public class Sistema {
     }
 
     public void listarPedidos() {
-        if (pedidos.isEmpty()) { // Mudei para "isEmpty"
+        if (pedidos.isEmpty()) {
             System.out.println("sem pedidos");
         } else {
-            for (Pedido pedido : pedidos) { // Encurtei o "for"
+            for (Pedido pedido : pedidos) {
                 System.out.println("---------------");
                 pedido.detalhesPedido();
                 for (int j = 0; j < pedido.itens.size(); j++) {
@@ -140,36 +140,34 @@ public class Sistema {
     public void buscarPedidosID() {
         System.out.println("Digite o id:");
         int id = Integer.parseInt(sc.nextLine());
-        boolean achou = false;
-        Pedido pedidoSubTotal = new Pedido(); // Chamei a classe aqui tmb
 
-        for (Pedido pedido : pedidos) { // Encurtei o "for"
-            if (pedido.id == id) { // Usei o "pedido" diretamente do or
-                achou = true;
-                System.out.println("Pedido encontrado");
-                System.out.println("id: " + pedido.id);
-                System.out.println("cliente: " + pedido.cliente.nome);
-                System.out.println("status: " + pedido.status);
-                System.out.println("total: " + pedido.total);
+        Pedido pedidoEncontrado = db.obterId(id);
 
-                System.out.println("subtotal (itens): " + pedidoSubTotal.precoTotal()); // Para colocra o total aqui
-                System.out.println("Categoria do cliente: " + pedido.cliente.tipoCliente());
 
-                for (int j = 0; j < pedido.itens.size(); j++) {
-                    Item item = pedido.itens.get(j);
-                    System.out.println("item " + (j + 1) + ": " + item.nome + " / " + item.quantidade + " / " + item.preco);
-                }
+        if (pedidoEncontrado != null) {
+            System.out.println("Pedido encontrado");
+            System.out.println("id: " + pedidoEncontrado.id);
+            System.out.println("cliente: " + pedidoEncontrado.cliente.nome);
+            System.out.println("status: " + pedidoEncontrado.status);
+            System.out.println("total: " + pedidoEncontrado.total);
+
+            System.out.println("subtotal (itens): " + pedidoEncontrado.precoTotal()); // Para colocra o total aqui
+            System.out.println("Categoria do cliente: " + pedidoEncontrado.cliente.tipoCliente());
+
+            for (int j = 0; j < pedidoEncontrado.itens.size(); j++) {
+                Item item = pedidoEncontrado.itens.get(j);
+                System.out.println("item " + (j + 1) + ": " + item.nome + " / " + item.quantidade + " / " + item.preco);
             }
         }
-
-        if (!achou) { // Simplifiquei o "if"
-            System.out.println("nao achou");
+        else {
+            System.out.println("Pedido não encontrado");
         }
     }
 
     public void gerarRelatorio() {
-        Relatorio relatorio = new Relatorio(); // Mudei o nome da variavel
-        relatorio.relatorioCompleto(pedidos);
+        Db bancoDadosSistema = new Db();
+        Relatorio relatorio = new Relatorio(bancoDadosSistema);
+        relatorio.relatorioCompleto();
     }
 
     public void cancelar() {
@@ -191,7 +189,7 @@ public class Sistema {
         System.out.println("pedido não existe");
     }
 
-    public double aplicarDesconto(double valor, int tipoCliente) { // Função separada
+    public double aplicarDesconto(double valor, int tipoCliente) {
         if (tipoCliente == 1 && valor > 300) {
             return valor - (valor * 0.05);
         } else if (tipoCliente == 2) {
@@ -202,12 +200,12 @@ public class Sistema {
         return valor;
     }
 
-    public double calcularFrete(double valor) { // Função separada
+    public double calcularFrete(double valor) {
         if (valor < 100) {
             return 25.0;
         } else if (valor >= 100 && valor < 300) {
             return 15.0;
         }
-        return 0.0; // Frete grátis
+        return 0.0;
     }
 }
