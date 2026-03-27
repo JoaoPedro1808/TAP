@@ -111,7 +111,7 @@ public class Sistema {
         pedido.total = totalComDesconto + calcularFrete(totalComDesconto);
 
         pedidos.add(pedido);
-        db.save(pedido);
+        db.salvarNoBanco(pedido);
 
         System.out.println("Pedido criado com sucesso");
         System.out.println("Id: " + pedido.id);

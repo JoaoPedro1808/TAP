@@ -7,7 +7,7 @@ public class Db {
 
     public static List<Pedido> banco = new ArrayList<>();
 
-    public void save(Pedido pedido) {
+    public void salvarNoBanco(Pedido pedido) {
         try {
             banco.add(pedido);
             System.out.println("salvou no banco");
