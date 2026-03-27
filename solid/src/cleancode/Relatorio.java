@@ -10,7 +10,6 @@ public class Relatorio {
     int clientesPremiums = 0;
     int clientesVips = 0;
 
-    public Db bancoDeDado;
     public LerDados lerDados;
 
     public Relatorio (LerDados lerDados) {
@@ -20,7 +19,7 @@ public class Relatorio {
     public void relatorioCompleto() {
         System.out.println("======= RELATÓRIO =======");
 
-        List<Pedido> pedidos = this.bancoDeDado.obterBanco();
+        List<Pedido> pedidos = this.lerDados.obterBanco();
         this.totalPedidos = pedidos.size();
 
         for (Pedido pedido : pedidos) {

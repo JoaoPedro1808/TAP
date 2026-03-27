@@ -2,7 +2,7 @@ package cleancode;
 
 import java.util.List;
 
-public class SalvarBanco implements ArmazenarBanco{
+public class SalvarBanco implements ArmazenarPedido {
     public List<Pedido> banco;
 
     public SalvarBanco(List<Pedido> banco) {

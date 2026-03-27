@@ -2,7 +2,7 @@ package cleancode;
 
 import java.util.List;
 
-public class LerDados implements InfoBanco{
+public class LerDados implements InfoPedido {
     public List<Pedido> banco;
 
     public LerDados(List<Pedido> banco) {

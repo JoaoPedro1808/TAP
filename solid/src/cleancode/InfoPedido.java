@@ -2,7 +2,7 @@ package cleancode;
 
 import java.util.List;
 
-public interface InfoBanco {
+public interface InfoPedido {
     Pedido obterId(int id);
     List<Pedido> obterBanco();
 }

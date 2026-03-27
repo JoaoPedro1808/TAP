@@ -1,5 +1,5 @@
 package cleancode;
 
-public interface ArmazenarBanco {
+public interface ArmazenarPedido {
     void salvarNoBanco(Pedido pedido);
 }
