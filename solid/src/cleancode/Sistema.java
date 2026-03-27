@@ -10,6 +10,7 @@ public class Sistema {
     List<Pedido> banco = new ArrayList<>();
     SalvarBanco salvarBanco = new SalvarBanco(banco);
     LerDados lerDados = new LerDados(banco);
+    CalculadoraPedido calculadoraPedido = new CalculadoraPedido();
 
     public void run() {
         int opcao = -1;
@@ -107,8 +108,8 @@ public class Sistema {
         }
 
         double subtotal = pedido.precoTotal();
-        double totalComDesconto = aplicarDesconto(subtotal, cliente.tipo);
-        pedido.total = totalComDesconto + calcularFrete(totalComDesconto);
+        double totalComDesconto = calculadoraPedido.aplicarDesconto(subtotal, cliente.tipo);
+        pedido.total = totalComDesconto + calculadoraPedido.calcularFrete(totalComDesconto);
 
         banco.add(pedido);
         salvarBanco.salvarNoBanco(pedido);
@@ -164,7 +165,7 @@ public class Sistema {
         }
     }
 
-    public void gerarRelatorio() { // Resolver na pasta de relatorio
+    public void gerarRelatorio() {
         Relatorio relatorio = new Relatorio(lerDados);
         relatorio.relatorioCompleto();
     }
@@ -193,25 +194,5 @@ public class Sistema {
         } else {
             System.out.println("Operação abortada");
         }
-    }
-
-    public double aplicarDesconto(double valor, int tipoCliente) {
-        if (tipoCliente == 1 && valor > 300) {
-            return valor - (valor * 0.05);
-        } else if (tipoCliente == 2) {
-            return valor > 200 ? valor - (valor * 0.10) : valor - (valor * 0.03);
-        } else if (tipoCliente == 3) {
-            return valor - (valor * 0.15);
-        }
-        return valor;
-    }
-
-    public double calcularFrete(double valor) {
-        if (valor < 100) {
-            return 25.0;
-        } else if (valor >= 100 && valor < 300) {
-            return 15.0;
-        }
-        return 0.0;
     }
 }
