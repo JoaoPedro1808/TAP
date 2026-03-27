@@ -11,9 +11,10 @@ public class Relatorio {
     int clientesVips = 0;
 
     public Db bancoDeDado;
+    public LerDados lerDados;
 
-    public Relatorio (Db bancoDeDado) {
-        this.bancoDeDado = bancoDeDado;
+    public Relatorio (LerDados lerDados) {
+        this.lerDados = lerDados;
     }
 
     public void relatorioCompleto() {

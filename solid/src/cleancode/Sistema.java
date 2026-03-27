@@ -7,8 +7,9 @@ import java.util.Scanner;
 
 public class Sistema {
     Scanner sc = new Scanner(System.in);
-    List<Pedido> pedidos = new ArrayList<>();
-    Db db = new Db();
+    List<Pedido> banco = new ArrayList<>();
+    SalvarBanco salvarBanco = new SalvarBanco(banco);
+    LerDados lerDados = new LerDados(banco);
 
     public void run() {
         int opcao = -1;
@@ -56,13 +57,13 @@ public class Sistema {
         }
 
         Cliente cliente = new Cliente();
-        cliente.id = pedidos.size() + 1;
+        cliente.id = banco.size() + 1;
         cliente.nome = nomeCliente;
         cliente.tipo = tipoDoCliente;
         cliente.email = nomeCliente.replace(" ", "").toLowerCase() + "@email.com";
 
         Pedido pedido = new Pedido();
-        pedido.id = pedidos.size() + 1;
+        pedido.id = banco.size() + 1;
         pedido.cliente = cliente;
         pedido.status = "NOVO";
         pedido.itens = new ArrayList<>();
@@ -109,8 +110,8 @@ public class Sistema {
         double totalComDesconto = aplicarDesconto(subtotal, cliente.tipo);
         pedido.total = totalComDesconto + calcularFrete(totalComDesconto);
 
-        pedidos.add(pedido);
-        db.salvarNoBanco(pedido);
+        banco.add(pedido);
+        salvarBanco.salvarNoBanco(pedido);
 
         System.out.println("Pedido criado com sucesso");
         System.out.println("Id: " + pedido.id);
@@ -123,10 +124,10 @@ public class Sistema {
     }
 
     public void listarPedidos() {
-        if (pedidos.isEmpty()) {
+        if (banco.isEmpty()) {
             System.out.println("sem pedidos");
         } else {
-            for (Pedido pedido : pedidos) {
+            for (Pedido pedido : banco) {
                 System.out.println("---------------");
                 pedido.detalhesPedido();
                 for (int j = 0; j < pedido.itens.size(); j++) {
@@ -141,7 +142,7 @@ public class Sistema {
         System.out.println("Digite o id:");
         int id = Integer.parseInt(sc.nextLine());
 
-        Pedido pedidoEncontrado = db.obterId(id);
+        Pedido pedidoEncontrado = lerDados.obterId(id);
 
         if (pedidoEncontrado != null) {
             System.out.println("Pedido encontrado");
@@ -163,16 +164,15 @@ public class Sistema {
         }
     }
 
-    public void gerarRelatorio() {
-        Db bancoDadosSistema = new Db();
-        Relatorio relatorio = new Relatorio(bancoDadosSistema);
+    public void gerarRelatorio() { // Resolver na pasta de relatorio
+        Relatorio relatorio = new Relatorio(lerDados);
         relatorio.relatorioCompleto();
     }
 
     public void cancelarPedido() {
         System.out.println("Digite id do pedido");
         int id = Integer.parseInt(sc.nextLine());
-        Pedido idPedido = db.obterId(id);
+        Pedido idPedido = lerDados.obterId(id);
 
         if (idPedido == null) {
             System.out.println("pedido não existe");
