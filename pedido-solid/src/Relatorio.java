@@ -1,5 +1,3 @@
-package cleancode;
-
 import java.util.List;
 
 public class Relatorio {

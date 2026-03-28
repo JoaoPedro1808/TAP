@@ -1,5 +1,3 @@
-package cleancode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,18 +47,22 @@ public class Sistema {
         String nomeCliente = sc.nextLine();
 
         System.out.println("Tipo cliente (1 comum, 2 premium, 3 vip):");
+        ClienteSistema cliente;
         int tipoDoCliente = 0;
         try {
             tipoDoCliente = Integer.parseInt(sc.nextLine());
+            switch (tipoDoCliente) {
+                case 2 -> cliente = new ClientePremium();
+                case 3 -> cliente = new ClienteVip();
+                default -> cliente = new ClienteComun();
+            }
         } catch (Exception e) {
             System.out.println("tipo errado, vai comum");
-            tipoDoCliente = 1;
+            cliente = new ClienteComun();
         }
 
-        Cliente cliente = new Cliente();
         cliente.id = banco.size() + 1;
         cliente.nome = nomeCliente;
-        cliente.tipo = tipoDoCliente;
         cliente.email = nomeCliente.replace(" ", "").toLowerCase() + "@email.com";
 
         Pedido pedido = new Pedido();
@@ -102,16 +104,10 @@ public class Sistema {
             continua = sc.nextLine();
         }
 
-        double total = 0;
-        for (int i = 0; i < pedido.itens.size(); i++) {
-            total = total + (pedido.itens.get(i).preco * pedido.itens.get(i).quantidade);
-        }
-
         double subtotal = pedido.precoTotal();
         double totalComDesconto = calculadoraPedido.aplicarDesconto(subtotal, cliente.tipo);
         pedido.total = totalComDesconto + calculadoraPedido.calcularFrete(totalComDesconto);
 
-        banco.add(pedido);
         salvarBanco.salvarNoBanco(pedido);
 
         System.out.println("Pedido criado com sucesso");
@@ -152,8 +148,8 @@ public class Sistema {
             System.out.println("status: " + pedidoEncontrado.status);
             System.out.println("total: " + pedidoEncontrado.total);
 
-            System.out.println("subtotal (itens): " + pedidoEncontrado.precoTotal()); // Para colocra o total aqui
-            System.out.println("Categoria do cliente: " + pedidoEncontrado.cliente.tipoCliente());
+            System.out.println("subtotal (itens): " + pedidoEncontrado.precoTotal());
+            System.out.println("Categoria do cliente: " + pedidoEncontrado.cliente.obterTipoCliente());
 
             for (int j = 0; j < pedidoEncontrado.itens.size(); j++) {
                 Item item = pedidoEncontrado.itens.get(j);

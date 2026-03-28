@@ -1,9 +1,8 @@
-package cleancode;
 import java.util.List;
 
 public class Pedido {
     public int id;
-    public Cliente cliente;
+    public ClienteSistema cliente;
     public List<Item> itens;
     public double total;
     public String status;
