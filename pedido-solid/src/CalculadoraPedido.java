@@ -1,3 +1,5 @@
+// Classe propia para calcular o desconto e o frete.
+
 public class CalculadoraPedido {
     public double aplicarDesconto(double valor, int tipoCliente) {
         if (tipoCliente == 1 && valor > 300) {

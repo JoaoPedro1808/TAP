@@ -1,3 +1,5 @@
+// Classe que realiza a interface InfoPedido para obter as informações do banco de dados
+
 import java.util.List;
 
 public class LerDados implements InfoPedido {

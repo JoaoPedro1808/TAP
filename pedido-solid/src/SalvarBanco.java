@@ -1,3 +1,5 @@
+// Classe que realiza da interface AramazenarPedido para salvar os pedidos no banco de dados.
+
 import java.util.List;
 
 public class SalvarBanco implements ArmazenarPedido {
